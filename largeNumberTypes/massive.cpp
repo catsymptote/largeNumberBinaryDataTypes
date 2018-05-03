@@ -44,10 +44,31 @@ void massive::setNumber(long long int num)
 	}
 }
 
+void massive::setSize(unsigned int size)
+{
+	this->number.assign(size, 0);
+	this->size = size;
+}
+
 /// Returns the binary representation of the number.
 std::vector<bool> massive::getBinary()
 {
 	return this->number;
+}
+
+bool massive::getBit(unsigned int index)
+{
+	return this->number.at(index);
+}
+
+void massive::setBit(unsigned int index, bool bit)
+{
+	/// This if should not be triggered.
+	if (index > this->size - 1)
+		for (unsigned int i = this->size; i <= index; i++)
+			this->number.push_back(0);
+
+	this->number.at(index) = bit;
 }
 
 /// Returns a long long int version of the number.
@@ -58,7 +79,7 @@ long long int massive::getDecimal()
 	for (int i = this->size - 1; i >= 0; i--)
 	{
 		if(this->number.at(i))
-			num += std::pow(2, i);
+			num += (long long int)std::pow(2, i);
 	}
 	return num;
 }
@@ -91,4 +112,43 @@ void massive::binaryPrint()
 void massive::decimalPrint()
 {
 	std::cout << this->getDecimal() << std::endl;
+}
+
+massive massive::add(massive &A, massive &B)
+{
+	massive C;
+	
+	//unsigned int newSize;
+	
+	//C.setSize()
+	for (unsigned int i = 0; i < this->size; i++)
+	{
+		if (A.getBit(i) && B.getBit(i))
+		{
+			C.setBit(i, 0);
+			C.setBit(i + 1, 1);
+		}
+		else if (A.getBit(i) || B.getBit(i))
+			C.setBit(i, 1);
+		else
+			C.setBit(i, 0);
+	}
+
+	//massive D(10);
+	return C;
+}
+
+massive massive::sub(massive A, massive B)
+{
+	return massive();
+}
+
+massive massive::mul(massive A, massive B)
+{
+	return massive();
+}
+
+massive massive::div(massive A, massive B)
+{
+	return massive();
 }
