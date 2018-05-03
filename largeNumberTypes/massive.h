@@ -6,6 +6,7 @@ class massive
 {
 public:
 	massive();
+	massive(long long int num);
 	~massive();
 
 private:
@@ -22,8 +23,6 @@ public:
 	void binaryPrint();
 
 	
-
-
 	void add();
 	void sub();
 	void mul();

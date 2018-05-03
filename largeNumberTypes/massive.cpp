@@ -6,7 +6,7 @@
 #include <cmath>		// For powers etc
 
 massive::massive() {}
-
+massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
 
 void massive::setNumber(long long int num)
