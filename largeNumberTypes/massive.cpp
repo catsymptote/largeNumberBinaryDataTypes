@@ -11,6 +11,13 @@ massive::~massive() {}
 
 void massive::setNumber(long long int num)
 {
+	if (num < 0)
+	{
+		this->sign = 1;
+		num *= -1;
+	}
+	else
+		this->sign = 0;
 	unsigned int exponent = 0;
 	while (std::pow(2, exponent) <= num)
 	{
@@ -43,6 +50,11 @@ std::vector<bool> massive::getBinary()
 void massive::binaryPrint()
 {
 	std::string numAsText = "";
+	if (this->sign == 0)
+		numAsText += "+";
+	else
+		numAsText += "-";
+	
 	for (int index = this->size - 1; index >= 0; index--)
 	{
 		if (this->number.at(index))

@@ -12,6 +12,7 @@ public:
 private:
 	std::vector<bool> number;
 	unsigned int size;
+	bool sign;	// 0=+, 1=-
 
 public:
 	void setNumber(long long int num);
