@@ -5,10 +5,12 @@
 #include <string>		// For printing
 #include <cmath>		// For powers etc
 
+/// ctors and dtor
 massive::massive() {}
 massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
 
+/// Input the number (base 10) as long long int, and store.
 void massive::setNumber(long long int num)
 {
 	if (num < 0)
@@ -42,24 +44,31 @@ void massive::setNumber(long long int num)
 	}
 }
 
+/// Returns the binary representation of the number.
 std::vector<bool> massive::getBinary()
 {
 	return this->number;
 }
 
+/// Returns a long long int version of the number.
 long long int massive::getDecimal()
 {
+	/// Does not check if long long int has sufficient capacity to store the number.
 	long long int num = 0;
-
 	for (int i = this->size - 1; i >= 0; i--)
 	{
 		if(this->number.at(i))
 			num += std::pow(2, i);
 	}
-
 	return num;
 }
 
+unsigned int massive::getSize()
+{
+	return this->size;
+}
+
+/// Prints the binary representation of the number.
 void massive::binaryPrint()
 {
 	std::string numAsText = "";
@@ -78,6 +87,7 @@ void massive::binaryPrint()
 	std::cout << numAsText << std::endl;
 }
 
+/// Prints the decimal representation of the number.
 void massive::decimalPrint()
 {
 	std::cout << this->getDecimal() << std::endl;

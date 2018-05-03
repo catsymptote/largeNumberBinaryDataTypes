@@ -10,15 +10,14 @@ public:
 	~massive();
 
 private:
-	std::vector<bool> number;
-	unsigned int size;
+	std::vector<bool> number;	// binary representation of the actual number
+	unsigned int size;	// vector length / bit count
 	bool sign;	// 0=+, 1=-
 
 public:
 	void setNumber(long long int num);
 	std::vector<bool> getBinary();
 	long long int getDecimal();
-
 	unsigned int getSize();
 
 	void binaryPrint();
