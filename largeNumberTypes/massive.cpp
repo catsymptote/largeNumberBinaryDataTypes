@@ -31,10 +31,10 @@ void massive::setNumber(long long int num)
 	this->number.assign(exponent, 0);
 
 	/// Loop through number
-	unsigned int pwr;
+	long long int pwr;
 	for(int i = exponent - 1; i >= 0; i--)
 	{
-		pwr = (unsigned int)(std::pow(2, i));
+		pwr = (long long int)(std::pow(2, i));
 		if (num >= pwr)
 		{
 			this->number.at(i) = 1;
