@@ -6,7 +6,7 @@
 #include <cmath>		// For powers etc
 
 /// ctors and dtor
-massive::massive() {}
+massive::massive() { this->size = 0; }
 massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
 
@@ -44,8 +44,10 @@ void massive::setNumber(long long int num)
 	}
 }
 
+/// Clears the number and sets a new size.
 void massive::setSize(unsigned int size)
 {
+	this->number.clear();
 	this->number.assign(size, 0);
 	this->size = size;
 }
@@ -58,16 +60,21 @@ std::vector<bool> massive::getBinary()
 
 bool massive::getBit(unsigned int index)
 {
+	if (index > this->size - 1)
+		return 0;
 	return this->number.at(index);
 }
 
 void massive::setBit(unsigned int index, bool bit)
 {
-	/// This if should not be triggered.
+	/// This if should generally not be triggered.
 	if (index > this->size - 1)
+	{
 		for (unsigned int i = this->size; i <= index; i++)
 			this->number.push_back(0);
-
+		this->size = index + 1;
+	}
+	
 	this->number.at(index) = bit;
 }
 
@@ -116,25 +123,55 @@ void massive::decimalPrint()
 
 massive massive::add(massive &A, massive &B)
 {
+	/// Create new number
 	massive C;
 	
-	//unsigned int newSize;
+	/// Get and set biggest size
+	if (A.getSize() > B.getSize())
+		C.setSize(A.getSize());
+	else
+		C.setSize(B.getSize());
 	
-	//C.setSize()
-	for (unsigned int i = 0; i < this->size; i++)
+	/// Addition loop
+	bool carry = false;
+	//for (unsigned int i = 0; i < C.getSize(); i++)
+	unsigned int i = 0;
+	while(carry || (i < C.getSize()))
 	{
+		// 1+1
 		if (A.getBit(i) && B.getBit(i))
 		{
-			C.setBit(i, 0);
-			C.setBit(i + 1, 1);
+			if(carry)
+				C.setBit(i, 1);
+			else
+			{
+				C.setBit(i, 0);
+				carry = true;
+			}
 		}
+		// 1+0 || 0+1
 		else if (A.getBit(i) || B.getBit(i))
-			C.setBit(i, 1);
+		{
+			if (carry)
+				C.setBit(i, 0);
+			else
+			{
+				C.setBit(i, 1);
+				carry = false;
+			}
+		}
+		// 0+0
 		else
-			C.setBit(i, 0);
+		{
+			if (carry)
+				C.setBit(i, 1);
+			else
+				C.setBit(i, 0);
+			carry = false;
+		}
+		i++;
 	}
 
-	//massive D(10);
 	return C;
 }
 
