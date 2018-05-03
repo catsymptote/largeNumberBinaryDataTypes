@@ -37,7 +37,7 @@ void massive::setNumber(long long int num)
 		{
 			this->number.at(i) = 1;
 			num -= pwr;
-			std::cout << num << std::endl;
+			//std::cout << num << std::endl;
 		}
 	}
 }
@@ -45,6 +45,19 @@ void massive::setNumber(long long int num)
 std::vector<bool> massive::getBinary()
 {
 	return this->number;
+}
+
+long long int massive::getDecimal()
+{
+	long long int num = 0;
+
+	for (int i = this->size - 1; i >= 0; i--)
+	{
+		if(this->number.at(i))
+			num += std::pow(2, i);
+	}
+
+	return num;
 }
 
 void massive::binaryPrint()
@@ -63,4 +76,9 @@ void massive::binaryPrint()
 			numAsText += "0";
 	}
 	std::cout << numAsText << std::endl;
+}
+
+void massive::decimalPrint()
+{
+	std::cout << this->getDecimal() << std::endl;
 }

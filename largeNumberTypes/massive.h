@@ -22,6 +22,7 @@ public:
 	unsigned int getSize();
 
 	void binaryPrint();
+	void decimalPrint();
 
 	
 	void add();
