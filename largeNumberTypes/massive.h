@@ -17,16 +17,16 @@ private:
 public:
 	void setNumber(long long int num);
 	void setSize(unsigned int size);
-	std::vector<bool> getBinary();
-	bool getBit(unsigned int index);
 	void setBit(unsigned int index, bool bit);
+
+	std::vector<bool> getBinary();
 	long long int getDecimal();
 	unsigned int getSize();
-
+	bool getBit(unsigned int index);
+	
 	void binaryPrint();
 	void decimalPrint();
 
-	
 	massive add(massive &A, massive &B);
 	massive sub(massive A, massive B);
 	massive mul(massive A, massive B);

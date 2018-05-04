@@ -5,10 +5,14 @@
 #include <string>		// For printing
 #include <cmath>		// For powers etc
 
+
+
 /// ctors and dtor
 massive::massive() { this->size = 0; }
 massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
+
+
 
 /// Input the number (base 10) as long long int, and store.
 void massive::setNumber(long long int num)
@@ -52,19 +56,7 @@ void massive::setSize(unsigned int size)
 	this->size = size;
 }
 
-/// Returns the binary representation of the number.
-std::vector<bool> massive::getBinary()
-{
-	return this->number;
-}
-
-bool massive::getBit(unsigned int index)
-{
-	if (index > this->size - 1)
-		return 0;
-	return this->number.at(index);
-}
-
+/// Set bit at specific index.
 void massive::setBit(unsigned int index, bool bit)
 {
 	/// This if should generally not be triggered.
@@ -74,8 +66,16 @@ void massive::setBit(unsigned int index, bool bit)
 			this->number.push_back(0);
 		this->size = index + 1;
 	}
-	
+
 	this->number.at(index) = bit;
+}
+
+
+
+/// Returns the binary representation of the number.
+std::vector<bool> massive::getBinary()
+{
+	return this->number;
 }
 
 /// Returns a long long int version of the number.
@@ -85,16 +85,27 @@ long long int massive::getDecimal()
 	long long int num = 0;
 	for (int i = this->size - 1; i >= 0; i--)
 	{
-		if(this->number.at(i))
+		if (this->number.at(i))
 			num += (long long int)std::pow(2, i);
 	}
 	return num;
 }
 
+/// Get the size (bit length) of the number.
 unsigned int massive::getSize()
 {
 	return this->size;
 }
+
+/// Set bit at specific index.
+bool massive::getBit(unsigned int index)
+{
+	if (index > this->size - 1)
+		return 0;
+	return this->number.at(index);
+}
+
+
 
 /// Prints the binary representation of the number.
 void massive::binaryPrint()
@@ -120,6 +131,8 @@ void massive::decimalPrint()
 {
 	std::cout << this->getDecimal() << std::endl;
 }
+
+
 
 massive massive::add(massive &A, massive &B)
 {
