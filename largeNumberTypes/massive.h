@@ -19,6 +19,7 @@ public:
 	void setNumber(long long int num);
 	void setSize(unsigned int size);
 	void setBit(unsigned int index, bool bit);
+	void setSign(bool sign);
 	void append_back(bool bit);
 	void append_front(bool bit);
 	void trim(unsigned int index);
@@ -28,6 +29,7 @@ public:
 	long long int getDecimal();
 	unsigned int getSize();
 	bool getBit(unsigned int index);
+	bool getSign();
 	
 	void binaryPrint();
 	void decimalPrint();

@@ -70,6 +70,13 @@ void massive::setBit(unsigned int index, bool bit)
 	this->number.at(index) = bit;
 }
 
+/// Set sign (+/-).
+void massive::setSign(bool sign)
+{
+	this->sign = sign;
+}
+
+
 /// Append a value
 void massive::append_back(bool bit)
 {
@@ -136,6 +143,8 @@ long long int massive::getDecimal()
 		if (this->number.at(i))
 			num += (long long int)std::pow(2, i);
 	}
+	if (this->sign)
+		num *= -1;
 	return num;
 }
 
@@ -153,6 +162,11 @@ bool massive::getBit(unsigned int index)
 	return this->number.at(index);
 }
 
+/// Get the sign (+/-).
+bool massive::getSign()
+{
+	return this->sign;
+}
 
 
 /// Prints the binary representation of the number.
@@ -184,7 +198,7 @@ void massive::decimalPrint()
 /// Complement of the binary number.
 void massive::complement()
 {
-	for (int i = 0; i < this->getSize(); i++)
+	for (unsigned int i = 0; i < this->getSize(); i++)
 	{
 		this->setBit(i, !this->getBit(i));
 	}
@@ -254,10 +268,10 @@ massive massive::sub(massive &A, massive &B)
 	
 	// Add necessary 0's or 1's
 	if (cB.getSize() < A.getSize())
-		for (int i = 0; i < (A.getSize() - cB.getSize()); i++)
+		for (unsigned int i = 0; i < (A.getSize() - cB.getSize()); i++)
 			cB.append_back(0);
 	else if(cB.getSize() > A.getSize())
-		for (int i = 0; i < (cB.getSize() - A.getSize()); i++)
+		for (unsigned int i = 0; i < (cB.getSize() - A.getSize()); i++)
 			A.append_back(0);
 		
 	// Complement -> add -> complement
@@ -310,7 +324,7 @@ massive massive::mul(massive& A, massive &B)
 
 	// Multiply
 	std::vector<massive> multElem;
-	for (int i = 0; i < A.getSize(); i++)
+	for (unsigned int i = 0; i < A.getSize(); i++)
 	{
 		multElem.push_back(massive(0));
 		unsigned int j = 0, k = 0;
@@ -335,7 +349,7 @@ massive massive::mul(massive& A, massive &B)
 	}
 
 	// Print multElem
-	for (int i = 0; i < multElem.size(); i++)
+	for (unsigned int i = 0; i < multElem.size(); i++)
 	{
 		for (int j = multElem.at(i).getSize() - 1; j > 0; j--)
 		{
@@ -347,11 +361,17 @@ massive massive::mul(massive& A, massive &B)
 	// Add together
 	massive C;
 	C = multElem.at(0);
-	for (int i = 1; i < multElem.size(); i++)
+	for (unsigned int i = 1; i < multElem.size(); i++)
 	{
 		C = C.add(C, multElem.at(i));
 	}
 	
+	// Sign (+/-)
+	if ((A.getSign() || B.getSign()) && !(A.getSign() && B.getSign()))
+		C.setSign(1);
+	else
+		C.setSign(0);
+
 	return C;
 }
 
