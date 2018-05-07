@@ -22,7 +22,7 @@ public:
 	void append_back(bool bit);
 	void append_front(bool bit);
 	void trim(unsigned int index);
-	void trimLeadingZero();
+	void trimLeadingZeros();
 
 	std::deque<bool> getBinary();
 	long long int getDecimal();
@@ -36,9 +36,9 @@ public:
 
 	massive add(massive &A, massive &B);
 	massive sub(massive &A, massive &B);
-	massive mul(massive A, massive B);
-	massive div(massive A, massive B);
-	massive pow(massive A);
+	massive mul(massive &A, massive &B);
+	massive div(massive &A, massive &B);
+	massive pow(massive &A);
 	massive increment();
 
 };

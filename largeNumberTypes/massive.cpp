@@ -94,7 +94,7 @@ void massive::trim(unsigned int index)
 }
 
 /// Removes all leading zeros (00001110 will remove the first 0's).
-void massive::trimLeadingZero()
+void massive::trimLeadingZeros()
 {
 	//unsigned int leadingZeros = 0;
 	unsigned int index = this->size-1;
@@ -181,7 +181,7 @@ void massive::decimalPrint()
 }
 
 
-
+/// Complement of the binary number.
 void massive::complement()
 {
 	for (int i = 0; i < this->getSize(); i++)
@@ -190,6 +190,7 @@ void massive::complement()
 	}
 }
 
+/// A + B
 massive massive::add(massive &A, massive &B)
 {
 	/// Create new number
@@ -244,6 +245,7 @@ massive massive::add(massive &A, massive &B)
 	return C;
 }
 
+/// A - B
 massive massive::sub(massive &A, massive &B)
 {
 	massive cB;		// Complement of B
@@ -287,7 +289,7 @@ massive massive::sub(massive &A, massive &B)
 	result.trim(A.getSize() -1);
 	std::cout << "resTrm:\t";
 	result.binaryPrint();
-	result.trimLeadingZero();
+	result.trimLeadingZeros();
 	std::cout << "rsTrm0:\t";
 	result.binaryPrint();
 	//result.complement();
@@ -297,12 +299,65 @@ massive massive::sub(massive &A, massive &B)
 	return result;
 }
 
-massive massive::mul(massive A, massive B)
+/// A * B
+massive massive::mul(massive& A, massive &B)
 {
+	// Trim leading zeros
+	A.trimLeadingZeros();
+	B.trimLeadingZeros();
+	A.binaryPrint();
+	B.binaryPrint();
+
+	// Multiply
+	std::vector<massive> multElem;
+	for (int i = 0; i < A.getSize(); i++)
+	{
+		multElem.push_back(massive(0));
+		unsigned int j = 0;
+		unsigned int k = 0;
+		while (j < B.getSize())
+		{
+			if (k < i)
+			{
+				multElem.at(i).append_front(0);
+			}
+			else if (A.getBit(i) && B.getBit(j))
+			{
+				multElem.at(i).append_front(1);
+				j++;
+			}
+			else
+			{
+				multElem.at(i).append_front(0);
+				j++;
+			}
+			k++;
+		}
+	}
+	
+	// print multElem
+	for (int i = 0; i < multElem.size(); i++)
+	{
+		std::vector<bool> tmp;
+		for (int j = 0; j < multElem.at(i).getSize(); j++)
+		{
+			std::cout << multElem.at(i).getBit(j);
+		}
+		std::cout << std::endl;
+	}
+
+	// Add together
+	massive C;
+	for (int i = 0; i < multElem.size() - 1; i++)
+	{
+		C = C.add(multElem.at(0), multElem.at(1));
+	}
+
 	return massive();
 }
 
-massive massive::div(massive A, massive B)
+/// A / B
+massive massive::div(massive &A, massive &B)
 {
 	return massive();
 }
