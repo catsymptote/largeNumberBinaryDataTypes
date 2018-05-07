@@ -83,18 +83,31 @@ void massive::append_front(bool bit)
 	this->size++;
 }
 
+/// Trims/removes every bits after (bigger than) index.
 void massive::trim(unsigned int index)
 {
 	if (index < this->size - 1)
 	{
-		this->number.erase(this->number.begin() + index, this->number.end());
-		this->size = index;
+		this->number.erase(this->number.begin() + index + 1, this->number.end());
+		this->size = index + 1;
 	}
 }
 
+/// Removes all leading zeros (00001110 will remove the first 0's).
 void massive::trimLeadingZero()
 {
-	unsigned int leadingZeros = 0;
+	//unsigned int leadingZeros = 0;
+	unsigned int index = this->size-1;
+	while (index > 0)
+	{
+		if (this->getBit(index))
+		{
+			this->trim(index + 0);
+			return;
+		}
+		index--;
+	}
+	/*
 	for (int i = 0; i < this->size; i++)
 	{
 		if (this->getBit(i))
@@ -102,7 +115,8 @@ void massive::trimLeadingZero()
 		else
 			leadingZeros++;
 	}
-	this->trim(leadingZeros);
+	*/
+	//this->trim(this->size - leadingZeros);
 }
 
 
@@ -246,26 +260,25 @@ massive massive::sub(massive &A, massive &B)
 		
 	// Complement -> add -> complement
 	
-	std::cout << "cB:\t";
+	// Print A and cB
+	std::cout << "AOrig:\t";
+	A.binaryPrint();
+
+	// cB complement
+	std::cout << "cBOrig:\t";
 	cB.binaryPrint();
 	cB.complement();
-	std::cout << "cB:\t";
+	std::cout << "cBCom:\t";
 	cB.binaryPrint();
 
 	// Increment cB by 1
 	massive one;
 	one.setNumber(1);
-	std::cout << "one:\t";
-	one.binaryPrint();
 	cB = cB.add(cB, one);
-	std::cout << "cB:\t";
+	std::cout << "cB++:\t";
 	cB.binaryPrint();
 
-	// Print A and cB
-	std::cout << "A:\t";
-	A.binaryPrint();
-	std::cout << "cB:\t";
-	cB.binaryPrint();
+	
 
 	// Result = add + trim 0 complement
 	result = result.add(A, cB);
@@ -277,9 +290,9 @@ massive massive::sub(massive &A, massive &B)
 	result.trimLeadingZero();
 	std::cout << "rsTrm0:\t";
 	result.binaryPrint();
-	result.complement();
-	std::cout << "resCom:\t";
-	result.binaryPrint();
+	//result.complement();
+	//std::cout << "resCom:\t";
+	//result.binaryPrint();
 
 	return result;
 }
