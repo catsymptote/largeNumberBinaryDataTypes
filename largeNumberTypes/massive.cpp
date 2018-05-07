@@ -63,17 +63,51 @@ void massive::setBit(unsigned int index, bool bit)
 	if (index > this->size - 1)
 	{
 		for (unsigned int i = this->size; i <= index; i++)
-			this->number.push_back(0);
-		this->size = index + 1;
+			this->append_back(0);
+		//this->size = index + 1;
 	}
 
 	this->number.at(index) = bit;
 }
 
+/// Append a value
+void massive::append_back(bool bit)
+{
+	this->number.push_back(bit);
+	this->size++;
+}
+
+void massive::append_front(bool bit)
+{
+	this->number.push_front(bit);
+	this->size++;
+}
+
+void massive::trim(unsigned int index)
+{
+	if (index < this->size - 1)
+	{
+		this->number.erase(this->number.begin() + index, this->number.end());
+		this->size = index;
+	}
+}
+
+void massive::trimLeadingZero()
+{
+	unsigned int leadingZeros = 0;
+	for (int i = 0; i < this->size; i++)
+	{
+		if (this->getBit(i))
+			break;
+		else
+			leadingZeros++;
+	}
+	this->trim(leadingZeros);
+}
 
 
 /// Returns the binary representation of the number.
-std::vector<bool> massive::getBinary()
+std::deque<bool> massive::getBinary()
 {
 	return this->number;
 }
@@ -134,6 +168,14 @@ void massive::decimalPrint()
 
 
 
+void massive::complement()
+{
+	for (int i = 0; i < this->getSize(); i++)
+	{
+		this->setBit(i, !this->getBit(i));
+	}
+}
+
 massive massive::add(massive &A, massive &B)
 {
 	/// Create new number
@@ -144,7 +186,7 @@ massive massive::add(massive &A, massive &B)
 		C.setSize(A.getSize());
 	else
 		C.setSize(B.getSize());
-	
+
 	/// Addition loop
 	bool carry = false;
 	//for (unsigned int i = 0; i < C.getSize(); i++)
@@ -188,9 +230,58 @@ massive massive::add(massive &A, massive &B)
 	return C;
 }
 
-massive massive::sub(massive A, massive B)
+massive massive::sub(massive &A, massive &B)
 {
-	return massive();
+	massive cB;		// Complement of B
+	cB = B;
+	massive result;	// Return value
+	
+	// Add necessary 0's or 1's
+	if (cB.getSize() < A.getSize())
+		for (int i = 0; i < (A.getSize() - cB.getSize()); i++)
+			cB.append_back(0);
+	else if(cB.getSize() > A.getSize())
+		for (int i = 0; i < (cB.getSize() - A.getSize()); i++)
+			A.append_back(0);
+		
+	// Complement -> add -> complement
+	
+	std::cout << "cB:\t";
+	cB.binaryPrint();
+	cB.complement();
+	std::cout << "cB:\t";
+	cB.binaryPrint();
+
+	// Increment cB by 1
+	massive one;
+	one.setNumber(1);
+	std::cout << "one:\t";
+	one.binaryPrint();
+	cB = cB.add(cB, one);
+	std::cout << "cB:\t";
+	cB.binaryPrint();
+
+	// Print A and cB
+	std::cout << "A:\t";
+	A.binaryPrint();
+	std::cout << "cB:\t";
+	cB.binaryPrint();
+
+	// Result = add + trim 0 complement
+	result = result.add(A, cB);
+	std::cout << "resAdd:\t";
+	result.binaryPrint();
+	result.trim(A.getSize() -1);
+	std::cout << "resTrm:\t";
+	result.binaryPrint();
+	result.trimLeadingZero();
+	std::cout << "rsTrm0:\t";
+	result.binaryPrint();
+	result.complement();
+	std::cout << "resCom:\t";
+	result.binaryPrint();
+
+	return result;
 }
 
 massive massive::mul(massive A, massive B)
