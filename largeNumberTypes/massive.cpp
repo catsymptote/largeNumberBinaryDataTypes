@@ -313,33 +313,31 @@ massive massive::mul(massive& A, massive &B)
 	for (int i = 0; i < A.getSize(); i++)
 	{
 		multElem.push_back(massive(0));
-		unsigned int j = 0;
-		unsigned int k = 0;
+		unsigned int j = 0, k = 0;
 		while (j < B.getSize())
 		{
 			if (k < i)
 			{
-				multElem.at(i).append_front(0);
+				multElem.at(i).append_back(0);
 			}
 			else if (A.getBit(i) && B.getBit(j))
 			{
-				multElem.at(i).append_front(1);
+				multElem.at(i).append_back(1);
 				j++;
 			}
 			else
 			{
-				multElem.at(i).append_front(0);
+				multElem.at(i).append_back(0);
 				j++;
 			}
 			k++;
 		}
 	}
-	
-	// print multElem
+
+	// Print multElem
 	for (int i = 0; i < multElem.size(); i++)
 	{
-		std::vector<bool> tmp;
-		for (int j = 0; j < multElem.at(i).getSize(); j++)
+		for (int j = multElem.at(i).getSize() - 1; j > 0; j--)
 		{
 			std::cout << multElem.at(i).getBit(j);
 		}
@@ -348,12 +346,13 @@ massive massive::mul(massive& A, massive &B)
 
 	// Add together
 	massive C;
-	for (int i = 0; i < multElem.size() - 1; i++)
+	C = multElem.at(0);
+	for (int i = 1; i < multElem.size(); i++)
 	{
-		C = C.add(multElem.at(0), multElem.at(1));
+		C = C.add(C, multElem.at(i));
 	}
-
-	return massive();
+	
+	return C;
 }
 
 /// A / B
