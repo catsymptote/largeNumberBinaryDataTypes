@@ -56,8 +56,8 @@ public:
 	massive pow(massive &A);
 	void increment();
 	void decrement();
-	void halfNum();
-	void doubleNum();
+	void div2();
+	void mul2();
 	
 
 	/// Comparisons
@@ -68,4 +68,16 @@ public:
 	bool biggerOrEqual(massive &A, massive &B);
 	bool smallerOrEqual(massive &A, massive &B);
 	
+
+	// Overloading operators
+	/// Comparators
+	friend bool operator > (massive &A, massive &B);
+	friend bool operator < (massive &A, massive &B);
+	friend bool operator == (massive &A, massive &B);
+	friend bool operator != (massive &A, massive &B);
+	friend bool operator >= (massive &A, massive &B);
+	friend bool operator <= (massive &A, massive &B);
+
+	/// Maths
+
 };

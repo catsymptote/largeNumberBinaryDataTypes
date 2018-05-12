@@ -13,7 +13,11 @@
 
 
 /// ctors and dtor
-massive::massive() { this->size = 0; }
+massive::massive()
+{
+	this->setNumber(0);
+	this->size = 1;
+}
 massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
 
@@ -409,27 +413,32 @@ massive massive::mul(massive & A, massive & B)
 /// A / B
 massive massive::div(massive & A, massive & B, bool mod)
 {
-	massive C, Ax, num2, BOver2;
-	Ax = A;
-	num2.setNumber(2);
-	BOver2 = BOver2.div(B, num2);
+	massive C, A1, A2;// , num2, BOver2;
+	A1 = A;
+	A2 = A;
+	A2.mul2();
+	//num2.setNumber(2);
+	//BOver2 = BOver2.div(B, num2);
 	long long holeDivs = 0;
 	
 	// Hole number division
-	while (Ax.isBigger(Ax, B))
+	while (A1.isBigger(A1, B))
 	{
-		Ax = Ax.sub(Ax, B);
-		holeDivs++;
+		A1 = A1.sub(A1, B);
+		C.increment();
+		//holeDivs++;
 	}
 
 	if (mod)
-		return Ax;
+		return A1;
 
 	// Half-way check (if)
-	if (Ax.isBigger(Ax, BOver2))
-		holeDivs++;
+	
+	if (A1.isBigger(A2, B))
+		C.increment();
+		//holeDivs++;
 
-	C.setNumber(holeDivs);
+	//C.setNumber(holeDivs);
 	return C;
 }
 
@@ -439,7 +448,7 @@ massive massive::pow(massive & A)
 	return this->mul(A, A);
 }
 
-/// A++
+/// this ++
 void massive::increment()
 {
 	unsigned int first0Bit = this->getSize();
@@ -461,7 +470,7 @@ void massive::increment()
 		this->setBit(i, 0);
 }
 
-/// A--
+/// this --
 void massive::decrement()
 {
 	unsigned int first1Bit = this->getSize();
@@ -483,12 +492,14 @@ void massive::decrement()
 		this->setBit(i, 1);
 }
 
-void massive::halfNum()
+/// this / 2
+void massive::div2()
 {
 	this->remove_front();
 }
 
-void massive::doubleNum()
+/// this * 2
+void massive::mul2()
 {
 	this->append_front(0);
 }
@@ -573,4 +584,44 @@ bool massive::smallerOrEqual(massive & A, massive & B)
 		return true;
 
 	return false;
+}
+
+
+
+/* Overloading operators */
+
+/// >
+bool operator > (massive & A, massive & B)
+{
+	return A.isBigger(A, B);
+}
+
+/// <
+bool operator < (massive & A, massive & B)
+{
+	return A.isSmaller(A, B);
+}
+
+/// ==
+bool operator == (massive & A, massive & B)
+{
+	return A.equals(A, B);
+}
+
+/// !=
+bool operator != (massive & A, massive & B)
+{
+	return A.notEquals(A, B);
+}
+
+/// >=
+bool operator >= (massive & A, massive & B)
+{
+	return A.biggerOrEqual(A, B);
+}
+
+/// <=
+bool operator <= (massive & A, massive & B)
+{
+	return A.smallerOrEqual(A, B);
 }
