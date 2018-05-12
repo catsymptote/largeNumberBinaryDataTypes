@@ -297,20 +297,59 @@ massive massive::add(massive & A, massive & B)
 /// A - B
 massive massive::sub(massive & A, massive & B)
 {
-	massive cB;		// Complement of B
-	cB = B;
-	massive result;	// Return value
+	//massive cB;		// Complement of B
+	//cB = B;
+	//massive result;	// Return value
+	massive Ax = A, Bx = B, C, tmp;
 	
+	// Make sure the first is smaller than the second
+	bool CSign = 0;
+	if (Ax < Bx)
+	{
+		tmp = Ax;
+		Ax = Bx;
+		Bx = tmp;
+		CSign = 1;;
+	}
+
 	// Add necessary 0's or 1's
-	if (cB.getSize() < A.getSize())
-		for (unsigned int i = 0; i < (A.getSize() - cB.getSize()); i++)
-			cB.append_back(0);
-	else if(cB.getSize() > A.getSize())
-		for (unsigned int i = 0; i < (cB.getSize() - A.getSize()); i++)
-			A.append_back(0);
+	if (Bx.getSize() < Ax.getSize())
+	{
+		for (unsigned int i = 0; i < (Ax.getSize() - Bx.getSize()); i++)
+		{
+			Bx.append_back(0);
+		}
+	}
+	else if (Bx.getSize() > Ax.getSize())
+	{
+		for (unsigned int i = 0; i < (Bx.getSize() - Ax.getSize()); i++)
+		{
+			Ax.append_back(0);
+		}
+	}
+	Ax.binaryPrint();
+	Bx.binaryPrint();
+	//C.binaryPrint();
+			
 		
-	// Complement -> add -> complement
-	
+	// Complement -> increment -> add numbers -> trim
+	!Bx;
+	Bx.binaryPrint();
+	Bx.increment();
+	std::cout << "--------" << std::endl;
+	Ax.binaryPrint();
+	Bx.binaryPrint();
+	std::cout << "--------" << std::endl;
+	C = Ax + Bx;
+	C.binaryPrint();
+	C.trim(Ax.getSize() - 1);
+	C.binaryPrint();
+
+	C.setSign(CSign);
+
+	return C;
+
+	/*
 	// Print A and cB
 	std::cout << "AOrig:\t";
 	A.binaryPrint();
@@ -318,19 +357,21 @@ massive massive::sub(massive & A, massive & B)
 	// cB complement
 	std::cout << "cBOrig:\t";
 	cB.binaryPrint();
-	cB.complement();
+	!cB;	// cB.complement();
+	//cB.complement();
 	std::cout << "cBCom:\t";
 	cB.binaryPrint();
 
 	// Increment cB by 1
-	massive one;
-	one.setNumber(1);
-	cB = cB.add(cB, one);
+	cB.increment();
+	//cB.complement();
+	//massive one;
+	//one.setNumber(1);
+	//cB = cB.add(cB, one);
 	std::cout << "cB++:\t";
 	cB.binaryPrint();
 
 	
-
 	// Result = add + trim 0 complement
 	result = result.add(A, cB);
 	std::cout << "resAdd:\t";
@@ -341,11 +382,11 @@ massive massive::sub(massive & A, massive & B)
 	result.trimLeadingZeros();
 	std::cout << "rsTrm0:\t";
 	result.binaryPrint();
+	!result;
 	//result.complement();
 	//std::cout << "resCom:\t";
 	//result.binaryPrint();
-
-	return result;
+	*/
 }
 
 /// A * B
@@ -637,7 +678,28 @@ bool operator <= (massive & A, massive & B)
 /// A + B
 massive operator+(massive & A, massive & B)
 {
-	return A.add(A, B);
+	massive C;
+
+	// ++ or --
+	if (A.getSign() == B.getSign())
+	{
+		C = C.add(A, B);
+		// --
+		if (A.getSign())
+			C.setSign(1);
+	}
+	// -+
+	else if (A.getSign())
+	{
+		C = C.sub(B, A);
+	}
+	// +-
+	else
+	{
+		C = C.sub(A, B);
+	}
+
+	return C;
 }
 
 /// A - B
@@ -684,6 +746,11 @@ void operator++(massive & A)
 void operator--(massive & A)
 {
 	A.decrement();
+}
+
+void operator!(massive & A)
+{
+	A.complement();
 }
 
 /// this[index]

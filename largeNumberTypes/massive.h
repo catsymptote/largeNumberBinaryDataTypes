@@ -87,6 +87,7 @@ public:
 	friend massive operator ^ (massive &A, long long int n);
 	friend void operator ++ (massive &A);
 	friend void operator -- (massive &A);
+	friend void operator ! (massive &A);
 	//friend bool operator [ ] (unsigned int index);
 	bool operator [ ] (unsigned int index);
 	
