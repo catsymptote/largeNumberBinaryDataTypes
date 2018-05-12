@@ -1,3 +1,9 @@
+/*	Author:	Catsymptote
+ *	Email:	catsymptote@gmail.com
+ */
+
+
+/// Imports
 #include "stdafx.h"
 #include "massive.h"
 
@@ -11,6 +17,9 @@ massive::massive() { this->size = 0; }
 massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
 
+
+
+/* Set methods */
 
 /// Input the number (base 10) as long long int, and store.
 void massive::setNumber(long long int num)
@@ -75,55 +84,8 @@ void massive::setSign(bool sign)
 }
 
 
-/// Append a value
-void massive::append_back(bool bit)
-{
-	this->number.push_back(bit);
-	this->size++;
-}
 
-void massive::append_front(bool bit)
-{
-	this->number.push_front(bit);
-	this->size++;
-}
-
-/// Trims/removes every bits after (bigger than) index.
-void massive::trim(unsigned int index)
-{
-	if (index < this->size - 1)
-	{
-		this->number.erase(this->number.begin() + index + 1, this->number.end());
-		this->size = index + 1;
-	}
-}
-
-/// Removes all leading zeros (00001110 will remove the first 0's).
-void massive::trimLeadingZeros()
-{
-	//unsigned int leadingZeros = 0;
-	unsigned int index = this->size-1;
-	while (index > 0)
-	{
-		if (this->getBit(index))
-		{
-			this->trim(index + 0);
-			return;
-		}
-		index--;
-	}
-	/*
-	for (int i = 0; i < this->size; i++)
-	{
-		if (this->getBit(i))
-			break;
-		else
-			leadingZeros++;
-	}
-	*/
-	//this->trim(this->size - leadingZeros);
-}
-
+/* Get methods */
 
 /// Returns the binary representation of the number.
 std::deque<bool> massive::getBinary()
@@ -167,6 +129,7 @@ bool massive::getSign()
 }
 
 
+
 /* Prints */
 
 /// Prints the binary representation of the number.
@@ -177,7 +140,7 @@ void massive::binaryPrint()
 		numAsText += "+";
 	else
 		numAsText += "-";
-	
+
 	for (int index = this->size - 1; index >= 0; index--)
 	{
 		if (this->number.at(index))
@@ -195,6 +158,66 @@ void massive::decimalPrint()
 }
 
 
+
+/* Other functions */
+
+/// Append a value
+void massive::append_back(bool bit)
+{
+	this->number.push_back(bit);
+	this->size++;
+}
+
+void massive::append_front(bool bit)
+{
+	this->number.push_front(bit);
+	this->size++;
+}
+
+/// Trims/removes every bits after (bigger than) index.
+void massive::trim(unsigned int index)
+{
+	if (index < this->size - 1)
+	{
+		this->number.erase(this->number.begin() + index + 1, this->number.end());
+		this->size = index + 1;
+	}
+}
+
+/// Removes all leading zeros (00001110 will remove the first 0's).
+void massive::trimLeadingZeros()
+{
+	//unsigned int leadingZeros = 0;
+	unsigned int index = this->size - 1;
+	while (index > 0)
+	{
+		if (this->getBit(index))
+		{
+			this->trim(index + 0);
+			return;
+		}
+		index--;
+	}
+	/*
+	for (int i = 0; i < this->size; i++)
+	{
+	if (this->getBit(i))
+	break;
+	else
+	leadingZeros++;
+	}
+	*/
+	//this->trim(this->size - leadingZeros);
+}
+
+/// Complement of the binary number.
+void massive::complement()
+{
+	for (unsigned int i = 0; i < this->getSize(); i++)
+	{
+		this->setBit(i, !this->getBit(i));
+	}
+}
 
 
 
@@ -406,14 +429,6 @@ void massive::increment()
 		this->setBit(i, 0);
 }
 
-/// Complement of the binary number.
-void massive::complement()
-{
-	for (unsigned int i = 0; i < this->getSize(); i++)
-	{
-		this->setBit(i, !this->getBit(i));
-	}
-}
 
 
 /* Comparisons */
