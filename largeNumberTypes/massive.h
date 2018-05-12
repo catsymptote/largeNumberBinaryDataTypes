@@ -34,7 +34,6 @@ public:
 	void binaryPrint();
 	void decimalPrint();
 
-	void complement();
 
 	/// Maths
 	massive add(massive &A, massive &B);
@@ -42,7 +41,9 @@ public:
 	massive mul(massive &A, massive &B);
 	massive div(massive &A, massive &B);
 	massive pow(massive &A);
-	massive increment();
+	void increment();
+	void complement();
+
 
 	/// Comparisons
 	bool equals(massive &A, massive &B);

@@ -167,6 +167,8 @@ bool massive::getSign()
 }
 
 
+/* Prints */
+
 /// Prints the binary representation of the number.
 void massive::binaryPrint()
 {
@@ -193,15 +195,10 @@ void massive::decimalPrint()
 }
 
 
-/// Complement of the binary number.
-void massive::complement()
-{
-	for (unsigned int i = 0; i < this->getSize(); i++)
-	{
-		this->setBit(i, !this->getBit(i));
-	}
-}
 
+
+
+/* Mathematics */
 
 /// A + B
 massive massive::add(massive & A, massive & B)
@@ -387,10 +384,39 @@ massive massive::pow(massive & A)
 }
 
 /// A++
-massive massive::increment()
+void massive::increment()
 {
-	return massive();
+	unsigned int first0Bit = this->getSize();
+	//for (int i = 0; i < this->getSize(); i++)
+	unsigned int index = 0;
+	while(index < this->getSize())
+	{
+		// If bit is 0 (otherwise pass this bit)
+		if (!this->getBit(index))
+		{
+			first0Bit = index;
+			break;
+		}
+		index++;
+	}
+	// Set first 0-bit to 1
+	this->setBit(first0Bit, 1);
+	// Set all lower bits to 0
+	for (int i = this->getSize(); i >= 0; i--)
+		this->setBit(i, 0);
 }
+
+/// Complement of the binary number.
+void massive::complement()
+{
+	for (unsigned int i = 0; i < this->getSize(); i++)
+	{
+		this->setBit(i, !this->getBit(i));
+	}
+}
+
+
+/* Comparisons */
 
 /// A == B
 bool massive::equals(massive & A, massive & B)
