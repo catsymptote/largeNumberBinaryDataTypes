@@ -174,6 +174,18 @@ void massive::append_front(bool bit)
 	this->size++;
 }
 
+void massive::remove_back()
+{
+	this->number.pop_back();
+	this->size--;
+}
+
+void massive::remove_front()
+{
+	this->number.pop_front();
+	this->size--;
+}
+
 /// Trims/removes every bits after (bigger than) index.
 void massive::trim(unsigned int index)
 {
@@ -395,9 +407,30 @@ massive massive::mul(massive & A, massive & B)
 }
 
 /// A / B
-massive massive::div(massive & A, massive & B)
+massive massive::div(massive & A, massive & B, bool mod)
 {
-	return massive();
+	massive C, Ax, num2, BOver2;
+	Ax = A;
+	num2.setNumber(2);
+	BOver2 = BOver2.div(B, num2);
+	long long holeDivs = 0;
+	
+	// Hole number division
+	while (Ax.isBigger(Ax, B))
+	{
+		Ax = Ax.sub(Ax, B);
+		holeDivs++;
+	}
+
+	if (mod)
+		return Ax;
+
+	// Half-way check (if)
+	if (Ax.isBigger(Ax, BOver2))
+		holeDivs++;
+
+	C.setNumber(holeDivs);
+	return C;
 }
 
 /// A^2
@@ -448,6 +481,16 @@ void massive::decrement()
 	// Set all lower bits to 0
 	for (int i = first1Bit - 1; i >= 0; i--)
 		this->setBit(i, 1);
+}
+
+void massive::halfNum()
+{
+	this->remove_front();
+}
+
+void massive::doubleNum()
+{
+	this->append_front(0);
 }
 
 

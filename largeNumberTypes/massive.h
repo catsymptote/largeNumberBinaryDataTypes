@@ -36,6 +36,8 @@ public:
 	/// Other methods
 	void append_back(bool bit);
 	void append_front(bool bit);
+	void remove_back();
+	void remove_front();
 	void trim(unsigned int index);
 	void trimLeadingZeros();
 	void complement();
@@ -50,10 +52,12 @@ public:
 	massive add(massive &A, massive &B);
 	massive sub(massive &A, massive &B);
 	massive mul(massive &A, massive &B);
-	massive div(massive &A, massive &B);
+	massive div(massive &A, massive &B, bool mod=false);
 	massive pow(massive &A);
 	void increment();
 	void decrement();
+	void halfNum();
+	void doubleNum();
 	
 
 	/// Comparisons
