@@ -354,8 +354,10 @@ massive massive::mul(massive & A, massive & B)
 	// Trim leading zeros
 	A.trimLeadingZeros();
 	B.trimLeadingZeros();
+	/*
 	A.binaryPrint();
 	B.binaryPrint();
+	*/
 
 	// Multiply
 	std::vector<massive> multElem;
@@ -383,6 +385,7 @@ massive massive::mul(massive & A, massive & B)
 		}
 	}
 
+	/*
 	// Print multElem
 	for (unsigned int i = 0; i < multElem.size(); i++)
 	{
@@ -392,6 +395,7 @@ massive massive::mul(massive & A, massive & B)
 		}
 		std::cout << std::endl;
 	}
+	*/
 
 	// Add together
 	massive C;
@@ -658,6 +662,16 @@ massive operator/(massive & A, massive & B)
 massive operator%(massive & A, massive & B)
 {
 	return A.div(A, B, true);
+}
+
+/// A ^ n (A_1 * A_2 * ... * A_n)
+massive operator^(massive & A, long long int n)
+{
+	massive C = A;
+	for (int i = 0; i < n - 2; i++)
+		C = C * C;
+
+	return C;
 }
 
 /// A ++
