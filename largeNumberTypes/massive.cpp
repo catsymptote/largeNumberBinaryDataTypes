@@ -9,7 +9,7 @@
 
 #include <iostream>		// For printing
 #include <string>		// For printing
-#include <cmath>		// For powers etc
+//#include <cmath>		// For powers etc
 
 
 /// ctors and dtor
@@ -425,7 +425,7 @@ void massive::increment()
 	// Set first 0-bit to 1
 	this->setBit(first0Bit, 1);
 	// Set all lower bits to 0
-	for (int i = this->getSize(); i >= 0; i--)
+	for (int i = first0Bit - 1; i >= 0; i--)
 		this->setBit(i, 0);
 }
 
