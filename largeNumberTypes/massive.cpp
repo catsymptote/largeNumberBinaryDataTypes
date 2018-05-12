@@ -6,12 +6,10 @@
 #include <cmath>		// For powers etc
 
 
-
 /// ctors and dtor
 massive::massive() { this->size = 0; }
 massive::massive(long long int num) { this->setNumber(num); }
 massive::~massive() {}
-
 
 
 /// Input the number (base 10) as long long int, and store.
@@ -204,8 +202,9 @@ void massive::complement()
 	}
 }
 
+
 /// A + B
-massive massive::add(massive &A, massive &B)
+massive massive::add(massive & A, massive & B)
 {
 	/// Create new number
 	massive C;
@@ -260,7 +259,7 @@ massive massive::add(massive &A, massive &B)
 }
 
 /// A - B
-massive massive::sub(massive &A, massive &B)
+massive massive::sub(massive & A, massive & B)
 {
 	massive cB;		// Complement of B
 	cB = B;
@@ -314,7 +313,7 @@ massive massive::sub(massive &A, massive &B)
 }
 
 /// A * B
-massive massive::mul(massive& A, massive &B)
+massive massive::mul(massive & A, massive & B)
 {
 	// Trim leading zeros
 	A.trimLeadingZeros();
@@ -376,7 +375,97 @@ massive massive::mul(massive& A, massive &B)
 }
 
 /// A / B
-massive massive::div(massive &A, massive &B)
+massive massive::div(massive & A, massive & B)
 {
 	return massive();
+}
+
+/// A^2
+massive massive::pow(massive & A)
+{
+	return this->mul(A, A);
+}
+
+/// A++
+massive massive::increment()
+{
+	return massive();
+}
+
+/// A == B
+bool massive::equals(massive & A, massive & B)
+{
+	// Sign comparison
+	if (A.getSign() != B.getSign())
+		return false;
+
+	// Size comparison
+	if (A.getSize() != B.getSize())
+		return false;
+
+	// Bit comparison, from lsd to msd
+	for (unsigned int i = 0; i < A.getSize(); i++)
+		if (A.getBit(i) != B.getBit(i))
+			return false;
+
+	// Otherwise
+	return true;
+}
+
+/// A != B
+bool massive::notEquals(massive & A, massive & B)
+{
+	return !(this->equals(A, B));
+}
+
+/// A > B
+bool massive::isBigger(massive & A, massive & B)
+{
+	// size: A > B
+	if (A.getSize() > B.getSize())
+		return true;
+	// size: A < B
+	else if (A.getSize() < B.getSize())
+		return false;
+	// size: A == B?
+	else
+	{
+		// Bitwise comparison, from msd to lsd
+		for (int i = A.getSize() - 1; i >= 0; i--)
+		{
+			// A > B
+			if (A.getBit(i) > B.getBit(i))
+				return true;
+			// A < B
+			else if (A.getBit(i) < B.getBit(i))
+				return false;
+		}
+	}
+
+	// Otherwise (A == B)
+	return false;
+}
+
+/// A < B
+bool massive::isSmaller(massive & A, massive & B)
+{
+	return this->isBigger(B, A);
+}
+
+/// A >= B
+bool massive::biggerOrEqual(massive & A, massive & B)
+{
+	if (this->isBigger(A, B) || this->equals(A, B))
+		return true;
+
+	return false;
+}
+
+/// A <= B
+bool massive::smallerOrEqual(massive & A, massive & B)
+{
+	if (this->isSmaller(A, B) || this->equals(A, B))
+		return true;
+
+	return false;
 }

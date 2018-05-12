@@ -36,6 +36,7 @@ public:
 
 	void complement();
 
+	/// Maths
 	massive add(massive &A, massive &B);
 	massive sub(massive &A, massive &B);
 	massive mul(massive &A, massive &B);
@@ -43,4 +44,12 @@ public:
 	massive pow(massive &A);
 	massive increment();
 
+	/// Comparisons
+	bool equals(massive &A, massive &B);
+	bool notEquals(massive &A, massive &B);
+	bool isBigger(massive &A, massive &B);
+	bool isSmaller(massive &A, massive &B);
+	bool biggerOrEqual(massive &A, massive &B);
+	bool smallerOrEqual(massive &A, massive &B);
+	
 };
