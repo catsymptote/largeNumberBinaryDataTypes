@@ -589,6 +589,7 @@ bool massive::smallerOrEqual(massive & A, massive & B)
 
 
 /* Overloading operators */
+/* Comparators */
 
 /// >
 bool operator > (massive & A, massive & B)
@@ -624,4 +625,55 @@ bool operator >= (massive & A, massive & B)
 bool operator <= (massive & A, massive & B)
 {
 	return A.smallerOrEqual(A, B);
+}
+
+
+/* Mathematical methods */
+
+/// A + B
+massive operator+(massive & A, massive & B)
+{
+	return A.add(A, B);
+}
+
+/// A - B
+massive operator-(massive & A, massive & B)
+{
+	return A.sub(A, B);
+}
+
+/// A * B
+massive operator*(massive & A, massive & B)
+{
+	return A.mul(A, B);
+}
+
+/// A / B
+massive operator/(massive & A, massive & B)
+{
+	return A.div(A, B);
+}
+
+/// A % B
+massive operator%(massive & A, massive & B)
+{
+	return A.div(A, B, true);
+}
+
+/// A ++
+void operator++(massive & A)
+{
+	A.increment();
+}
+
+/// A --
+void operator--(massive & A)
+{
+	A.decrement();
+}
+
+/// this[index]
+bool massive::operator[](unsigned int index)
+{
+	return this->getBit(index);
 }

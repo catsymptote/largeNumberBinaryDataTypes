@@ -79,5 +79,14 @@ public:
 	friend bool operator <= (massive &A, massive &B);
 
 	/// Maths
+	friend massive operator + (massive &A, massive &B);
+	friend massive operator - (massive &A, massive &B);
+	friend massive operator * (massive &A, massive &B);
+	friend massive operator / (massive &A, massive &B);
+	friend massive operator % (massive &A, massive &B);
+	friend void operator ++ (massive &A);
+	friend void operator -- (massive &A);
+	//friend bool operator [ ] (unsigned int index);
+	bool operator [ ] (unsigned int index);
 
 };
