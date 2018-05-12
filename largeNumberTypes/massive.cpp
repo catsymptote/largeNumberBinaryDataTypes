@@ -410,7 +410,6 @@ massive massive::pow(massive & A)
 void massive::increment()
 {
 	unsigned int first0Bit = this->getSize();
-	//for (int i = 0; i < this->getSize(); i++)
 	unsigned int index = 0;
 	while(index < this->getSize())
 	{
@@ -427,6 +426,28 @@ void massive::increment()
 	// Set all lower bits to 0
 	for (int i = first0Bit - 1; i >= 0; i--)
 		this->setBit(i, 0);
+}
+
+/// A--
+void massive::decrement()
+{
+	unsigned int first1Bit = this->getSize();
+	unsigned int index = 0;
+	while (index < this->getSize())
+	{
+		// If bit is 1 (otherwise pass this bit)
+		if (this->getBit(index))
+		{
+			first1Bit = index;
+			break;
+		}
+		index++;
+	}
+	// Set first 0-bit to 1
+	this->setBit(first1Bit, 0);
+	// Set all lower bits to 0
+	for (int i = first1Bit - 1; i >= 0; i--)
+		this->setBit(i, 1);
 }
 
 
