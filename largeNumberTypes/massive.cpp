@@ -673,6 +673,7 @@ bool operator <= (massive & A, massive & B)
 }
 
 
+
 /* Mathematical methods */
 
 /// A + B
@@ -748,6 +749,7 @@ void operator--(massive & A)
 	A.decrement();
 }
 
+/// !A (complement of A)
 void operator!(massive & A)
 {
 	A.complement();
