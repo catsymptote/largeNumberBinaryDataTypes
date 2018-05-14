@@ -88,7 +88,16 @@ public:
 	friend void operator ++ (massive &A);
 	friend void operator -- (massive &A);
 	friend void operator ! (massive &A);
-	//friend bool operator [ ] (unsigned int index);
+	massive operator += (massive &A);
+	massive operator -= (massive &A);
+	massive operator *= (massive &A);
+	massive operator /= (massive &A);
+	massive operator %= (massive &A);
+	massive operator ^= (massive &A);
+
+
+	/// Other
+	friend std::ostream& operator << (std::ostream& out, massive A);
 	bool operator [ ] (unsigned int index);
 	
 };

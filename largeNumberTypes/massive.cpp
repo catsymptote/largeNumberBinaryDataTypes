@@ -695,6 +695,73 @@ void operator!(massive & A)
 	A.complement();
 }
 
+
+
+/* Compound assignment operators (not yet working) */
+
+/// +=
+massive massive::operator+=(massive & A)
+{
+	massive B, C;
+	B = *this;
+	C = this->add(B, A);
+	return C;
+	//return this->add(*this, A);
+}
+
+/// -=
+massive massive::operator-=(massive & A)
+{
+	return massive();
+}
+
+/// *=
+massive massive::operator*=(massive & A)
+{
+	return massive();
+}
+
+/// /=
+massive massive::operator/=(massive & A)
+{
+	return massive();
+}
+
+/// %=
+massive massive::operator%=(massive & A)
+{
+	return massive();
+}
+
+/// ^=
+massive massive::operator^=(massive & A)
+{
+	return massive();
+}
+
+
+
+/* Other overloaded operators */
+
+/// <<
+std::ostream & operator<<(std::ostream & out, massive A)
+{
+	if (A.getSign() == 0)
+		out << "+";
+	else
+		out << "-";
+
+	for (int index = A.getSize() - 1; index >= 0; index--)
+	{
+		//if (this->number.at(index))
+		if (A.getBit(index))
+			out << "1";
+		else
+			out << "0";
+	}
+	return out;
+}
+
 /// this[index]
 bool massive::operator[](unsigned int index)
 {
