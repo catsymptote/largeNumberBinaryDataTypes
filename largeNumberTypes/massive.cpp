@@ -341,6 +341,7 @@ massive massive::sub(massive & A, massive & B)
 	C.binaryPrint();
 
 	C.setSign(CSign);
+	C.trimLeadingZeros();
 
 	return C;
 }
