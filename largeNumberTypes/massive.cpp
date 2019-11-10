@@ -59,6 +59,42 @@ void massive::setNumber(long long int num)
 	}
 }
 
+
+void massive::setFromString(std::string num)
+{
+	this->setNumber(0);
+	int start_num = 0;
+	int chunk_size = 5;
+	massive total;
+
+	while (num.length() > start_num)
+	{
+		std::string str_start;
+		int end_num = 0;
+		if (num.length() > start_num + chunk_size)
+			end_num = start_num + chunk_size;
+		else
+			end_num = num.length();
+		str_start = num.substr(start_num, end_num);
+		
+		long long int part_num = std::stoll(str_start);
+		
+
+		massive tmp(part_num);
+		
+		massive base_10(10);
+		
+		massive exp(num.length() - end_num - 1);
+		base_10 = base_10.pow(base_10, exp);
+		tmp = tmp * base_10;
+		total = total + tmp;
+		total.decimalPrint();	// crashes here when total is 0, but not 1. Might be due to add(). When 1, inf loop/no reaction.
+		
+		start_num += chunk_size;
+	}
+}
+
+
 /// Clears the number and sets a new size.
 void massive::setSize(unsigned int size)
 {
@@ -132,6 +168,12 @@ bool massive::getSign()
 	return this->sign;
 }
 
+bool massive::is_zero()
+{
+	if (this->getSize() == 1 and this->getBit(0) == 0)
+		return true;
+	return false;
+}
 
 
 /* Prints */
@@ -244,6 +286,12 @@ massive massive::add(massive & A, massive & B)
 {
 	/// Create new number
 	massive C;
+
+	/// If zero, just return the other.
+	if (A.is_zero())
+		return B;
+	else if (B.is_zero())
+		return A;
 	
 	/// Get and set biggest size
 	if (A.getSize() > B.getSize())
@@ -429,9 +477,12 @@ massive massive::div(massive & A, massive & B, bool mod)
 }
 
 /// A^2
-massive massive::pow(massive & A)
+massive massive::pow(massive & A, massive & B)
 {
-	return this->mul(A, A);
+	massive C = A;
+	for (unsigned long long int i = 0; i < B.getDecimal(); i++)
+		C = C * A;
+	return C;
 }
 
 /// this ++

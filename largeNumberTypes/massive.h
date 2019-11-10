@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <deque>
+#include <string>
 
 class massive
 {
@@ -20,6 +21,7 @@ private:
 public:
 	/// Set methods
 	void setNumber(long long int num);
+	void setFromString(std::string num);
 	void setSize(unsigned int size);
 	void setBit(unsigned int index, bool bit);
 	void setSign(bool sign);
@@ -31,6 +33,7 @@ public:
 	unsigned int getSize();
 	bool getBit(unsigned int index);
 	bool getSign();
+	bool is_zero();
 	
 
 	/// Other methods
@@ -53,7 +56,7 @@ public:
 	massive sub(massive &A, massive &B);
 	massive mul(massive &A, massive &B);
 	massive div(massive &A, massive &B, bool mod=false);
-	massive pow(massive &A);
+	massive pow(massive &A, massive &B);
 	void increment();
 	void decrement();
 	void div2();
